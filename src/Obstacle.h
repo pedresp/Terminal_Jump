@@ -8,12 +8,12 @@ class Obstacle {
     position pos;
 
   public:
-    bool advance_1_step();
+    virtual bool advance_1_step() = 0;
 
     virtual ~Obstacle() = 0;
 };
 
-class Box : Obstacle {
+class Box : public Obstacle {
   private:
     int height;
 

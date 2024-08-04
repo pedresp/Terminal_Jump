@@ -8,7 +8,7 @@ Box::Box(int y, int x, int height) {
     height = height;
 }
 
-bool Box::advance_1_step(){
+bool Box::advance_1_step() {
     mvaddch(pos.y, pos.x, ' ');
     pos.x--;
 
@@ -19,4 +19,4 @@ bool Box::advance_1_step(){
     return pos.x > -1;
 }
 
-Box::~Box(){}
+Box::~Box() {}
