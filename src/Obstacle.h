@@ -19,6 +19,7 @@ class Box : Obstacle {
 
   public:
     Box(int, int, int = 1);
+    bool advance_1_step();
     ~Box();
 };
 
