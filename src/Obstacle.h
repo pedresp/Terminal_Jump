@@ -16,9 +16,10 @@ class Obstacle {
 class Box : public Obstacle {
   private:
     int height;
+    int width;
 
   public:
-    Box(int, int, int = 1);
+    Box(int, int, int = 1, int = 1);
     bool advance_1_step();
     ~Box();
 };

@@ -1,22 +1,29 @@
 #include "Obstacle.h"
 #include <ncurses.h>
 
-Box::Box(int y, int x, int height) {
+Box::Box(int y, int x, int height, int width) {
     pos.x = x;
     pos.y = y;
 
-    height = height;
+    this->height = height;
+    this->width = width;
 }
 
 bool Box::advance_1_step() {
-    mvaddch(pos.y, pos.x, ' ');
     pos.x--;
 
-    attron(COLOR_PAIR(10));
-    mvaddch(pos.y, pos.x, ' ');
-    attroff(COLOR_PAIR(10));
+    //remove previous line
+    if (pos.x + width < COLS)
+        mvvline(pos.y - height + 1, pos.x + width, ' ', height);
 
-    return pos.x > -1;
+    //add new column
+    if (pos.x < COLS && pos.x >= 0) {
+        attron(COLOR_PAIR(10));
+        mvvline(pos.y - height + 1, pos.x, ' ', height);
+        attroff(COLOR_PAIR(10));
+    }
+
+    return pos.x + width > 0;
 }
 
 Box::~Box() {}

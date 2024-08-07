@@ -18,10 +18,10 @@ int main() {
     getch();
 
     std::vector<std::unique_ptr<Obstacle>> scenario;
-    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS));
-    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 1));
-    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 3));
-    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 6));
+    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS, 1, 2));
+    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 2, 2, 2));
+    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 4, 3, 3));
+    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 9, 2, 3));
 
     int finger = 0, scenario_size = scenario.size();
     while (finger < scenario_size) {
