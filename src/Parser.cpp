@@ -99,6 +99,22 @@ scenario_states state4(std::istream& is, std::vector<std::unique_ptr<Obstacle>>&
     
     return UNEXPECTED_CHAR;
 }
+
+scenario_states state5(std::istream& is, std::vector<std::unique_ptr<Obstacle>>& vec, int& count, int height, int width){
+    char c;
+    is.get(c);
+    printw("%c", c);
+
+    if (!c)
+        return NO_OBSTACLE_SPECIFIED;
+    else if (isdigit(c))
+        return state5(is, vec, count, height, 10 * width + c - 48);
+    else if (c == '|')
+        return state3(is, vec, count, height, width);
+
+    return UNEXPECTED_CHAR;
+}
+
 scenario_states read_scenario(std::istream& is, std::vector<std::unique_ptr<Obstacle>>& vec){
     int count = 0;
 
