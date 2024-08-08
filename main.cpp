@@ -2,9 +2,9 @@
 #include "Parser.h"
 #include <ncurses.h>
 
+#include <fstream>
 #include <memory>
 #include <vector>
-#include <fstream>
 
 #include <unistd.h>
 
@@ -23,10 +23,10 @@ int main() {
     std::ifstream input_scenario("../scenario.txt");
 
     if (read_scenario(input_scenario, scenario) == CORRECT_SCENARIO) {
-//    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS, 1, 2));
-//    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 2, 2, 2));
-//    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 4, 3, 3));
-//    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 9, 2, 3));
+        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS, 1, 2));
+        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 2, 2, 2));
+        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 4, 3, 3));
+        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 9, 2, 3));
 
         int finger = 0, scenario_size = scenario.size();
         while (finger < scenario_size) {
@@ -38,7 +38,7 @@ int main() {
             usleep(50 * 1000);
         }
     } else
-        mvprintw(LINES/2, 0, "WRONG SCENARIO");
+        mvprintw(LINES / 2, 0, "WRONG SCENARIO");
 
     refresh();
     input_scenario.close();

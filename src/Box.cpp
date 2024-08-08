@@ -12,11 +12,11 @@ Box::Box(int y, int x, int height, int width) {
 bool Box::advance_1_step() {
     pos.x--;
 
-    //remove previous line
+    // remove previous line
     if (pos.x + width < COLS)
         mvvline(pos.y - height + 1, pos.x + width, ' ', height);
 
-    //add new column
+    // add new column
     if (pos.x < COLS && pos.x >= 0) {
         attron(COLOR_PAIR(10));
         mvvline(pos.y - height + 1, pos.x, ' ', height);
