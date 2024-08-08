@@ -1,5 +1,6 @@
 #include "Obstacle.h"
 #include "Parser.h"
+#include "Jumper.h"
 #include <ncurses.h>
 
 #include <fstream>
@@ -12,6 +13,7 @@ int main() {
     initscr();
     start_color();
     curs_set(false);
+    nodelay(stdscr, 1);
     printw("Welcome to Terminal Jump");
 
     init_pair(10, COLOR_WHITE, COLOR_GREEN);
@@ -22,14 +24,20 @@ int main() {
     std::vector<std::unique_ptr<Obstacle>> scenario;
     std::ifstream input_scenario("../scenario.txt");
 
-    if (read_scenario(input_scenario, scenario) == CORRECT_SCENARIO) {
-        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS, 1, 2));
-        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 2, 2, 2));
-        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 4, 3, 3));
-        //    scenario.push_back(std::make_unique<Box>(LINES - 1, COLS + 9, 2, 3));
+    Jumper jumper(3, 2);
+    mvaddch(LINES-1, 3, 'x');
+    refresh();
 
+    char charac;
+
+    if (read_scenario(input_scenario, scenario) == CORRECT_SCENARIO) {
         int finger = 0, scenario_size = scenario.size();
         while (finger < scenario_size) {
+            charac = getch();
+            if (charac == ERR)
+                charac = '\0';
+            jumper.step(charac);        
+
             for (int i = finger; i < scenario_size; i++)
                 if (!scenario[i]->advance_1_step())
                     finger++;
