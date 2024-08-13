@@ -40,7 +40,13 @@ void Jumper::step(char c) {
         --pos.y;
         mvaddch(pos.y, pos.x, '+');
         mvaddch(pos.y + 1, pos.x, ' ');
-    }
+    } else
+        mvaddch(pos.y, pos.x, 'x');
+}
+
+void Jumper::landed() {
+    this->up = false;
+    this->jump_stage = 0;
 }
 
 position Jumper::getPos() { return this->pos; }

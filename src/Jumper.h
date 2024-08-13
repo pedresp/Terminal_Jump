@@ -19,6 +19,7 @@ class Jumper {
     Jumper(int, int = 3, int = 2);
 
     void step(char);
+    void landed();
     position getPos();
     int getY();
     int getX();
