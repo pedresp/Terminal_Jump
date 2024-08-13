@@ -13,8 +13,10 @@ class Jumper {
     char repr;
     bool up;
 
+    int jump_delay, jump_delay_stage;
+
   public:
-    Jumper(int, int = 3);
+    Jumper(int, int = 3, int = 2);
 
     void step(char);
 
