@@ -8,4 +8,6 @@ int Obstacle::getX() { return this->pos.x; }
 
 int Obstacle::getWidth() { return this->width; }
 
+int Obstacle::getHeight() { return this->height; }
+
 Obstacle::~Obstacle() {}

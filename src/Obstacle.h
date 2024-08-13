@@ -7,6 +7,7 @@ class Obstacle {
   protected:
     position pos;
     int width;
+    int height;
 
   public:
     virtual bool advance_1_step() = 0;
@@ -14,14 +15,12 @@ class Obstacle {
     int getY();
     int getX();
     int getWidth();
+    int getHeight();
 
     virtual ~Obstacle() = 0;
 };
 
 class Box : public Obstacle {
-  private:
-    int height;
-
   public:
     Box(int, int, int = 1, int = 1);
 
