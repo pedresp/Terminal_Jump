@@ -7,11 +7,11 @@ class Jumper {
   private:
     position pos;
 
-    int jump_stage;
-    int jump_height;
+    // int jump_stage;
+    int jump_height, jump_starting_point;
 
     char repr;
-    bool up;
+    bool up, floor, jumping;
 
     int jump_delay, jump_delay_stage;
 
@@ -23,6 +23,8 @@ class Jumper {
     position getPos();
     int getY();
     int getX();
+    bool getUp();
+    void resetFloor();
 
     ~Jumper();
 };

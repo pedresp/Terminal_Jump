@@ -34,11 +34,12 @@ int main() {
 
     if (read_scenario(input_scenario, scenario) == CORRECT_SCENARIO) {
         int finger = 0, scenario_size = scenario.size();
-        Obstacle* obstacle_on_jumper_coordinates = nullptr;
+        Obstacle* obstacle_on_jumper_coordinates;
 
         bool game_over = false;
         while (!game_over && finger < scenario_size) {
             charac = getch();
+            obstacle_on_jumper_coordinates = nullptr;
 
             for (int i = finger; i < scenario_size; i++) {
                 if (!scenario[i]->advance_1_step())
@@ -52,11 +53,14 @@ int main() {
                 charac = '\0';
             jumper.step(charac);
 
+            jumper.resetFloor();
+
             // check if there is a collision or touch between jumper and obstacles
             if (obstacle_on_jumper_coordinates != nullptr) {
+                mvprintw(13, 0, "LANDED: %d", !jumper.getUp() && LINES - jumper.getY() - 1 == obstacle_on_jumper_coordinates->getHeight());
                 if (LINES - jumper.getY() <= obstacle_on_jumper_coordinates->getHeight())
                     game_over = true;
-                else if (LINES - jumper.getY() - 1 == obstacle_on_jumper_coordinates->getHeight())
+                else if (!jumper.getUp() && LINES - jumper.getY() - 1 == obstacle_on_jumper_coordinates->getHeight())
                     jumper.landed();
             }
 
