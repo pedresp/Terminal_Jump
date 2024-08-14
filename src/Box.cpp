@@ -9,6 +9,15 @@ Box::Box(int y, int x, int height, int width) {
     this->width = width;
 }
 
+void Box::draw() {
+    // draw complete obstacle
+    for (int i = 0; i < width; i++) {
+        attron(COLOR_PAIR(10));
+        mvvline(pos.y - height + 1, pos.x + i, ' ', height);
+        attroff(COLOR_PAIR(10));
+    }
+}
+
 bool Box::advance_1_step() {
     pos.x--;
 

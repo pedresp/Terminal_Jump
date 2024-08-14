@@ -36,6 +36,10 @@ int main() {
         int finger = 0, scenario_size = scenario.size();
         Obstacle* obstacle_on_jumper_coordinates;
 
+        for (auto i = scenario.begin(); i < scenario.end(); i++)
+            (*i)->draw();
+        refresh();
+
         bool game_over = false;
         while (!game_over && finger < scenario_size) {
             charac = getch();

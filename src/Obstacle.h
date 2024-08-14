@@ -11,6 +11,7 @@ class Obstacle {
 
   public:
     virtual bool advance_1_step() = 0;
+    virtual void draw() = 0;
     position getPos();
     int getY();
     int getX();
@@ -25,6 +26,7 @@ class Box : public Obstacle {
     Box(int, int, int = 1, int = 1);
 
     bool advance_1_step();
+    void draw();
 
     ~Box();
 };
