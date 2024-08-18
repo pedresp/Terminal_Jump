@@ -1,13 +1,7 @@
 #include "Obstacle.h"
 #include <ncurses.h>
 
-Box::Box(int y, int x, int height, int width) {
-    pos.x = x;
-    pos.y = y;
-
-    this->height = height;
-    this->width = width;
-}
+Box::Box(int y, int x, int height, int width) : Obstacle(y, x, height, width) {}
 
 void Box::draw() {
     // draw complete obstacle

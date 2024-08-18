@@ -9,9 +9,17 @@ class Obstacle {
     int width;
     int height;
 
+    // restart attributes
+    position r_pos;
+
   public:
+    Obstacle(int, int, int, int);
+
+    void restart();
+
     virtual bool advance_1_step() = 0;
     virtual void draw() = 0;
+
     position getPos();
     int getY();
     int getX();
