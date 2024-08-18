@@ -36,48 +36,58 @@ int main() {
         int finger = 0, scenario_size = scenario.size();
         Obstacle* obstacle_on_jumper_coordinates;
 
-        for (auto i = scenario.begin(); i < scenario.end(); i++)
-            (*i)->draw();
-        refresh();
+        bool game_over = true;
+        while (game_over) {
+            erase();
+            mvprintw(0, 0, "Welcome to Terminal Jump");
 
-        bool game_over = false;
-        while (!game_over && finger < scenario_size) {
-            charac = getch();
-            obstacle_on_jumper_coordinates = nullptr;
-
-            for (int i = finger; i < scenario_size; i++) {
-                if (!scenario[i]->advance_1_step())
-                    finger++;
-
-                if (JUMPER_X >= scenario[i]->getX() && JUMPER_X < scenario[i]->getX() + scenario[i]->getWidth())
-                    obstacle_on_jumper_coordinates = scenario[i].get();
+            for (auto i = scenario.begin(); i < scenario.end(); i++) {
+                (*i)->restart();
+                (*i)->draw();
             }
-
-            if (charac == ERR)
-                charac = '\0';
-            jumper.step(charac);
-
-            jumper.resetFloor();
-
-            // check if there is a collision or touch between jumper and obstacles
-            if (obstacle_on_jumper_coordinates != nullptr) {
-                mvprintw(13, 0, "LANDED: %d", !jumper.getUp() && LINES - jumper.getY() - 1 == obstacle_on_jumper_coordinates->getHeight());
-                if (LINES - jumper.getY() <= obstacle_on_jumper_coordinates->getHeight())
-                    game_over = true;
-                else if (!jumper.getUp() && LINES - jumper.getY() - 1 == obstacle_on_jumper_coordinates->getHeight())
-                    jumper.landed();
-            }
-
             refresh();
-            usleep(50 * 1000);
+
+            sleep(1);
+
+            finger = 0;
+            game_over = false;
+            while (!game_over && finger < scenario_size) {
+                charac = getch();
+                obstacle_on_jumper_coordinates = nullptr;
+
+                for (int i = finger; i < scenario_size; i++) {
+                    if (!scenario[i]->advance_1_step())
+                        finger++;
+
+                    if (JUMPER_X >= scenario[i]->getX() && JUMPER_X < scenario[i]->getX() + scenario[i]->getWidth())
+                        obstacle_on_jumper_coordinates = scenario[i].get();
+                }
+
+                if (charac == ERR)
+                    charac = '\0';
+                jumper.step(charac);
+
+                jumper.resetFloor();
+
+                // check if there is a collision or touch between jumper and obstacles
+                if (obstacle_on_jumper_coordinates != nullptr) {
+                    mvprintw(13, 0, "LANDED: %d", !jumper.getUp() && LINES - jumper.getY() - 1 == obstacle_on_jumper_coordinates->getHeight());
+                    if (LINES - jumper.getY() <= obstacle_on_jumper_coordinates->getHeight())
+                        game_over = true;
+                    else if (!jumper.getUp() && LINES - jumper.getY() - 1 == obstacle_on_jumper_coordinates->getHeight())
+                        jumper.landed();
+                }
+
+                refresh();
+                usleep(50 * 1000);
+            }
+
+            // decide final screen (game over or victory)
+            if (game_over)
+                mvprintw(LINES / 2, COLS / 2, "GAME OVER !!");
+            else
+                mvprintw(LINES / 2, COLS / 2, "VICTORY !!");
         }
-
-        // decide final screen (game over or victory)
-        if (game_over)
-            mvprintw(LINES / 2, COLS / 2, "GAME OVER !!");
-        else
-            mvprintw(LINES / 2, COLS / 2, "VICTORY !!");
-
     } else
         mvprintw(LINES / 2, 0, "WRONG SCENARIO");
 
