@@ -16,6 +16,7 @@ int main() {
     start_color();
     curs_set(false);
     nodelay(stdscr, 1);
+    noecho();
     printw("Welcome to Terminal Jump");
 
     init_pair(10, COLOR_WHITE, COLOR_GREEN);
@@ -79,7 +80,7 @@ int main() {
                 }
 
                 refresh();
-                usleep(50 * 1000);
+                usleep(60 * 1000);
             }
 
             // decide final screen (game over or victory)
