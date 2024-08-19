@@ -42,6 +42,7 @@ int main() {
             erase();
             mvprintw(0, 0, "Welcome to Terminal Jump");
 
+            jumper.restart();
             for (auto i = scenario.begin(); i < scenario.end(); i++) {
                 (*i)->restart();
                 (*i)->draw();

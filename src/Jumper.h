@@ -18,6 +18,8 @@ class Jumper {
   public:
     Jumper(int, int = 3, int = 2);
 
+    void restart();
+
     void step(char);
     void landed();
     position getPos();

@@ -18,6 +18,22 @@ Jumper::Jumper(int x, int jump_height, int jump_delay) {
     this->jump_delay_stage = 0;
 }
 
+//assign Jumper's attributes the same values as during creation
+void Jumper::restart(){
+    this->pos.y = LINES - 1;
+
+    this->jump_height = jump_height;
+    this->jump_starting_point = pos.y;
+
+    this->repr = 'x';
+    this->up = false;
+    this->floor = false;
+    this->jumping = false;
+
+    this->jump_delay = jump_delay;
+    this->jump_delay_stage = 0;
+}
+
 void Jumper::step(char c) {
     mvprintw(15, 0, "JUMPING: %d UP: %d FLOOR: %d", jumping, up, floor);
     if (jumping) {
