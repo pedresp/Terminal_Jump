@@ -10,46 +10,28 @@
 #include <unistd.h>
 
 int JUMPER_X = 3;
+int JUMP_HEIGHT = 2;
 
-int main() {
-    initscr();
-    start_color();
-    curs_set(false);
-    nodelay(stdscr, 1);
-    noecho();
-    printw("Welcome to Terminal Jump");
-
-    init_pair(10, COLOR_WHITE, COLOR_GREEN);
-
-    refresh();
-    getch();
-
-    std::vector<std::unique_ptr<Obstacle>> scenario;
-    std::ifstream input_scenario("../scenario.txt");
-
-    Jumper jumper(JUMPER_X, 2);
-    mvaddch(LINES - 1, 3, 'x');
-    refresh();
-
+bool launch_scenario(std::ifstream& input_scenario, std::vector<std::unique_ptr<Obstacle>>& scenario, Jumper& jumper){
     char charac;
-
     if (read_scenario(input_scenario, scenario) == CORRECT_SCENARIO) {
         int finger = 0, scenario_size = scenario.size();
         Obstacle* obstacle_on_jumper_coordinates;
 
         bool game_over = true;
         while (game_over) {
+            sleep(1);
+
             erase();
             mvprintw(0, 0, "Welcome to Terminal Jump");
 
             jumper.restart();
+            jumper.draw();
             for (auto i = scenario.begin(); i < scenario.end(); i++) {
                 (*i)->restart();
                 (*i)->draw();
             }
             refresh();
-
-            sleep(1);
 
             finger = 0;
             game_over = false;
@@ -89,8 +71,33 @@ int main() {
                 mvprintw(LINES / 2, COLS / 2, "GAME OVER !!");
             else
                 mvprintw(LINES / 2, COLS / 2, "VICTORY !!");
+            refresh();
         }
+
+        return true;
     } else
+        return false;
+}
+
+int main() {
+    initscr();
+    start_color();
+    curs_set(false);
+    nodelay(stdscr, 1);
+    noecho();
+    printw("Welcome to Terminal Jump");
+
+    init_pair(10, COLOR_WHITE, COLOR_GREEN);
+
+    refresh();
+    getch();
+
+    std::vector<std::unique_ptr<Obstacle>> scenario;
+    std::ifstream input_scenario("../scenario.txt");
+
+    Jumper jumper(JUMPER_X, JUMP_HEIGHT);
+
+    if (launch_scenario(input_scenario, scenario, jumper) == false)
         mvprintw(LINES / 2, 0, "WRONG SCENARIO");
 
     refresh();
