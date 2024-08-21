@@ -18,8 +18,11 @@ Jumper::Jumper(int x, int jump_height, int jump_delay) {
     this->jump_delay_stage = 0;
 }
 
-//assign Jumper's attributes the same values as during creation
-void Jumper::restart(){
+// draws the jumper object in its current location
+void Jumper::draw() { mvaddch(pos.y, pos.x, 'x'); }
+
+// assign Jumper's attributes the same values as during creation
+void Jumper::restart() {
     this->pos.y = LINES - 1;
 
     this->jump_height = jump_height;

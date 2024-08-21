@@ -18,6 +18,7 @@ class Jumper {
   public:
     Jumper(int, int = 3, int = 2);
 
+    void draw();
     void restart();
 
     void step(char);
