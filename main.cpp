@@ -1,16 +1,28 @@
 #include "Jumper.h"
 #include "Obstacle.h"
 #include "Parser.h"
+#include "CenteredMenu.h"
 #include <ncurses.h>
 
 #include <fstream>
 #include <memory>
 #include <vector>
+#include <filesystem>
 
 #include <unistd.h>
 
 int JUMPER_X = 3;
 int JUMP_HEIGHT = 2;
+
+std::vector<std::string> list_files(std::string route = "."){
+    std::vector<std::string> ldir;
+
+    for (const auto& file : std::filesystem::directory_iterator(route))
+        if (std::filesystem::is_regular_file(file.path()))
+            ldir.push_back(file.path());
+
+    return ldir;
+}
 
 bool launch_scenario(std::ifstream& input_scenario, std::vector<std::unique_ptr<Obstacle>>& scenario, Jumper& jumper){
     char charac;
@@ -92,10 +104,14 @@ int main() {
     refresh();
     getch();
 
+    //scenario variables
     std::vector<std::unique_ptr<Obstacle>> scenario;
-    std::ifstream input_scenario("../scenario.txt");
-
     Jumper jumper(JUMPER_X, JUMP_HEIGHT);
+
+    auto available_scenarios = list_files("../scenarios/");
+
+    //select scenario via cms
+    std::ifstream input_scenario(available_scenarios[cms::centered_menu("TERMINAL JUMP", available_scenarios)]);
 
     if (launch_scenario(input_scenario, scenario, jumper) == false)
         mvprintw(LINES / 2, 0, "WRONG SCENARIO");
