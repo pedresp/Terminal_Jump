@@ -108,10 +108,13 @@ int main() {
     std::vector<std::unique_ptr<Obstacle>> scenario;
     Jumper jumper(JUMPER_X, JUMP_HEIGHT);
 
-    auto available_scenarios = list_files("../scenarios/");
+    std::string prefix = "../scenarios/";
+    std::vector<std::string> available_scenarios, files_list = list_files(prefix);
+    for (int i = 0; i < (int)files_list.size(); ++i)
+        available_scenarios.push_back(files_list[i].substr(prefix.size()));
 
     //select scenario via cms
-    std::ifstream input_scenario(available_scenarios[cms::centered_menu("TERMINAL JUMP", available_scenarios)]);
+    std::ifstream input_scenario(files_list[cms::centered_menu("TERMINAL JUMP", available_scenarios)]);
 
     if (launch_scenario(input_scenario, scenario, jumper) == false)
         mvprintw(LINES / 2, 0, "WRONG SCENARIO");
