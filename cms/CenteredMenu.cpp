@@ -106,5 +106,5 @@ int cms::centered_menu(const std::string& title, const std::vector<std::string>&
 
     delete[] items;
 
-    return option_selected;
+    return pressed_enter?option_selected:-1;
 }
