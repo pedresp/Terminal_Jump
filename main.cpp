@@ -14,6 +14,9 @@
 int JUMPER_X = 3;
 int JUMP_HEIGHT = 2;
 
+std::string title = "TERMINAL JUMP", paktc = "PRESS ANY KEY TO CONTINUE", s_wrong_scenario = "WRONG SCENARIO";
+std::string s_victory = "VICTORY !!", s_game_over = "GAME OVER !!";
+
 std::vector<std::string> list_files(std::string route = "."){
     std::vector<std::string> ldir;
 
@@ -61,6 +64,8 @@ bool launch_scenario(std::ifstream& input_scenario, std::vector<std::unique_ptr<
 
                 if (charac == ERR)
                     charac = '\0';
+                else if (charac == 27)
+                    return true;
                 jumper.step(charac);
 
                 jumper.resetFloor();
@@ -80,9 +85,9 @@ bool launch_scenario(std::ifstream& input_scenario, std::vector<std::unique_ptr<
 
             // decide final screen (game over or victory)
             if (game_over)
-                mvprintw(LINES / 2, COLS / 2, "GAME OVER !!");
+                mvprintw(LINES/2, COLS/2 - s_game_over.size()/2, "%s", s_game_over.c_str());
             else
-                mvprintw(LINES / 2, COLS / 2, "VICTORY !!");
+                mvprintw(LINES/2, COLS/2 - s_victory.size()/2, "%s", s_victory.c_str());
             refresh();
         }
 
@@ -107,6 +112,7 @@ int main() {
     //scenario variables
     std::vector<std::unique_ptr<Obstacle>> scenario;
     Jumper jumper(JUMPER_X, JUMP_HEIGHT);
+    std::ifstream input_scenario;
 
     std::string prefix = "../scenarios/";
     std::vector<std::string> available_scenarios, files_list = list_files(prefix);
@@ -114,17 +120,27 @@ int main() {
         available_scenarios.push_back(files_list[i].substr(prefix.size()));
 
     //select scenario via cms
-    std::ifstream input_scenario(files_list[cms::centered_menu("TERMINAL JUMP", available_scenarios)]);
+    int available_scenario_index = cms::centered_menu(title, available_scenarios);
+    while (available_scenario_index >= 0){
+        input_scenario.open(files_list[available_scenario_index]);
 
-    if (launch_scenario(input_scenario, scenario, jumper) == false)
-        mvprintw(LINES / 2, 0, "WRONG SCENARIO");
+        // IMPORTANT: launch_scenario need nodelay value to be true for stdscr
+        nodelay(stdscr, 1);
+        if (launch_scenario(input_scenario, scenario, jumper) == false)
+            mvprintw(LINES/2, COLS/2 - s_wrong_scenario.size()/2, "%s", s_wrong_scenario.c_str());
 
-    refresh();
-    input_scenario.close();
+        refresh();
+        input_scenario.close();
+        scenario.clear();
 
-    nodelay(stdscr, 0);
-    getch();
+        mvprintw(LINES/2, COLS/2 - paktc.size()/2, "%s", paktc.c_str());
+        nodelay(stdscr, 0);
+        getch();
+        mvhline(LINES/2, COLS/2 - paktc.size()/2, ' ', paktc.size());
+
+        available_scenario_index = cms::centered_menu(title, available_scenarios);
+    }
+
     endwin();
-
     return 0;
 }
